@@ -2,6 +2,7 @@
   <Import Project="..\..\versions.props" />
   <PropertyGroup>
     <TargetFrameworks>net461</TargetFrameworks>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -36,6 +37,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Steeltoe.CloudFoundry.ConnectorAutofac\Steeltoe.CloudFoundry.ConnectorAutofac.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Pivotal.GemFire">
+      <HintPath>..\..\temp-dependencies\Pivotal.GemFire.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

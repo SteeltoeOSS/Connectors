@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\..\versions.props" />
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.0;netcoreapp2.1;net461</TargetFrameworks>
+    <TargetFrameworks>net461;netcoreapp2.0;netcoreapp2.1</TargetFrameworks>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -46,6 +47,12 @@
       <Link>stylecop.json</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AdditionalFiles>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Reference Include="Pivotal.GemFire">
+      <HintPath>..\..\temp-dependencies\Pivotal.GemFire.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
