@@ -1,5 +1,34 @@
 # .NET CloudFoundry Connectors
 
+---
+
+## Special notes for this branch
+
+As Pivotal GemFire is not directly available for download by a CI system or end user, you will have to manually download the assemblies from [PivNet](https://network.pivotal.io/products/pivotal-gemfire#/releases/231060/file_groups/1249).
+
+### GemFire Demo Applications
+
+Two applications are included inside the demo folder
+
+1. GemFire4 - A basic .NET4/MVC5 sample using new Steeltoe to parse VCAP services and use GemFire `CacheFactory`, `Cache` and `PoolFactory` objects with Autofac
+1. GemFireCore - A basic ASP.NET Core/net461 sample using new Steeltoe to parse VCAP services and use GemFire `CacheFactory`, `Cache` and `PoolFactory` objects with Microsoft DI
+    - Includes a crude `IDistributedCache` implementation
+    - Uses the `IDistributedCache` implementation to store session state in GemFire
+    - Region and pool names are not currently configurable with this `IDistributedCache` implementation
+
+PCF Notes:
+
+- Both included manifest files will bind to a PCC instance named `pcc-dev`
+- Publish/Deploy:
+  - Publish GemFire4 by right-clicking on the project in Visual Studio, use the included profile
+  - Publish GemFireCore by executing `dotnet publish` from the command line, inside the GemFireCore folder
+  - Deploy either with `cf push -f manifest.yml -p bin/debug/net461/publish` from a prompt inside the appropriate project folder
+- PCC Cluster Prep:
+  - Use gfsh to connect to your cluster
+  - create regions SteeltoeDemo and IDistributedCache
+
+---
+
 This repository contains several connectors which simplify the process of connecting to services on CloudFoundry.
 
 Windows Master (Stable): [![AppVeyor Master](https://ci.appveyor.com/api/projects/status/ivdciaopp5kxo3cp/branch/master?svg=true)](https://ci.appveyor.com/project/steeltoe/connectors/branch/master)

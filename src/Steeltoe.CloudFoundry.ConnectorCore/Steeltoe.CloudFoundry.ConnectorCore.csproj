@@ -49,4 +49,10 @@
     </AdditionalFiles>
   </ItemGroup>
   
+  <ItemGroup>
+    <Reference Include="Pivotal.Gemfire">
+      <HintPath>..\..\temp-dependencies\Pivotal.GemFire.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  
 </Project>
