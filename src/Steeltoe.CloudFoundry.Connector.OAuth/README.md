@@ -4,4 +4,4 @@ This project contains a Steeltoe Connector for OAuth services.  This connector s
 
 It exposes the OAuth service configuration data as injectable `IOption<OAuthServiceOptions>`. This connector is used by the ASP.NET Core [CloudFoundry External Security Provider](https://github.com/SteeltoeOSS/Security), but can be used standalone as well.
 
-For more information on how to use this component see the online [Steeltoe documentation](http://steeltoe.io/).
+For more information on how to use this component see the online [Steeltoe documentation](https://steeltoe.io/).
