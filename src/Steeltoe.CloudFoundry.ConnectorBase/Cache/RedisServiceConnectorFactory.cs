@@ -79,5 +79,11 @@ namespace Steeltoe.CloudFoundry.Connector.Redis
         {
             return Initializer.Invoke(ConnectorType, new object[] { options, null });
         }
+
+        public string GetConnectionString()
+        {
+            var connectionOptions = _configurer.Configure(_info, _config);
+            return connectionOptions.ToString();
+        }
     }
 }

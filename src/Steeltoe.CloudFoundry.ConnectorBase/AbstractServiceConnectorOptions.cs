@@ -19,6 +19,7 @@ using System.Text;
 namespace Steeltoe.CloudFoundry.Connector
 {
     public abstract class AbstractServiceConnectorOptions
+
     {
         protected const char Default_Terminator = ';';
         protected const char Default_Separator = '=';

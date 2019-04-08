@@ -34,7 +34,7 @@ namespace Steeltoe.CloudFoundry.Connector.Redis
         /// <param name="logFactory">logger factory</param>
         /// <returns>IServiceCollection for chaining</returns>
         /// <remarks>RedisCache is retrievable as both RedisCache and IDistributedCache</remarks>
-        public static IServiceCollection AddDistributedRedisCache(this IServiceCollection services, IConfiguration config, ILoggerFactory logFactory = null)
+        public static IServiceCollection AddDistributedRedisCache(this IServiceCollection services, IConfiguration config, ILoggerFactory logFactory = null, IHealthChecksBuilder healthChecksBuilder = null)
         {
             if (services == null)
             {
@@ -46,7 +46,7 @@ namespace Steeltoe.CloudFoundry.Connector.Redis
                 throw new ArgumentNullException(nameof(config));
             }
 
-            return services.AddDistributedRedisCache(config, config, null);
+            return services.AddDistributedRedisCache(config, config, null, healthChecksBuilder: healthChecksBuilder);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Steeltoe.CloudFoundry.Connector.Redis
         /// <param name="logFactory">logger factory</param>
         /// <returns>IServiceCollection for chaining</returns>
         /// <remarks>RedisCache is retrievable as both RedisCache and IDistributedCache</remarks>
-        public static IServiceCollection AddDistributedRedisCache(this IServiceCollection services, IConfiguration config, string serviceName, ILoggerFactory logFactory = null)
+        public static IServiceCollection AddDistributedRedisCache(this IServiceCollection services, IConfiguration config, string serviceName, ILoggerFactory logFactory = null, IHealthChecksBuilder healthChecksBuilder = null)
         {
             if (services == null)
             {
@@ -75,7 +75,7 @@ namespace Steeltoe.CloudFoundry.Connector.Redis
                 throw new ArgumentNullException(nameof(config));
             }
 
-            return services.AddDistributedRedisCache(config, config, serviceName);
+            return services.AddDistributedRedisCache(config, config, serviceName, healthChecksBuilder: healthChecksBuilder);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Steeltoe.CloudFoundry.Connector.Redis
         /// <param name="contextLifetime"><see cref="ServiceLifetime"/> of the service to inject</param>
         /// <returns>IServiceCollection for chaining</returns>
         /// <remarks>RedisCache is retrievable as both RedisCache and IDistributedCache</remarks>
-        public static IServiceCollection AddDistributedRedisCache(this IServiceCollection services, IConfiguration applicationConfiguration, IConfiguration connectorConfiguration, string serviceName, ServiceLifetime contextLifetime = ServiceLifetime.Singleton)
+        public static IServiceCollection AddDistributedRedisCache(this IServiceCollection services, IConfiguration applicationConfiguration, IConfiguration connectorConfiguration, string serviceName, ServiceLifetime contextLifetime = ServiceLifetime.Singleton, IHealthChecksBuilder healthChecksBuilder = null)
         {
             if (services == null)
             {
@@ -106,7 +106,7 @@ namespace Steeltoe.CloudFoundry.Connector.Redis
                 ? configToConfigure.GetRequiredServiceInfo<RedisServiceInfo>(serviceName)
                 : configToConfigure.GetSingletonServiceInfo<RedisServiceInfo>();
 
-            DoAddIDistributedCache(services, info, configToConfigure, contextLifetime);
+            DoAddIDistributedCache(services, info, configToConfigure, contextLifetime, healthChecksBuilder);
             return services;
         }
 
@@ -121,7 +121,7 @@ namespace Steeltoe.CloudFoundry.Connector.Redis
         /// <param name="config">App configuration</param>
         /// <returns>IServiceCollection for chaining</returns>
         /// <remarks>ConnectionMultiplexer is retrievable as both ConnectionMultiplexer and IConnectionMultiplexer</remarks>
-        public static IServiceCollection AddRedisConnectionMultiplexer(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddRedisConnectionMultiplexer(this IServiceCollection services, IConfiguration config, IHealthChecksBuilder healthChecksBuilder = null)
         {
             if (services == null)
             {
@@ -133,7 +133,7 @@ namespace Steeltoe.CloudFoundry.Connector.Redis
                 throw new ArgumentNullException(nameof(config));
             }
 
-            return services.AddRedisConnectionMultiplexer(config, config, null);
+            return services.AddRedisConnectionMultiplexer(config, config, null, healthChecksBuilder: healthChecksBuilder);
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace Steeltoe.CloudFoundry.Connector.Redis
         /// <param name="serviceName">Name of service to add</param>
         /// <returns>IServiceCollection for chaining</returns>
         /// <remarks>ConnectionMultiplexer is retrievable as both ConnectionMultiplexer and IConnectionMultiplexer</remarks>
-        public static IServiceCollection AddRedisConnectionMultiplexer(this IServiceCollection services, IConfiguration config, string serviceName)
+        public static IServiceCollection AddRedisConnectionMultiplexer(this IServiceCollection services, IConfiguration config, string serviceName, IHealthChecksBuilder healthChecksBuilder = null)
         {
             if (services == null)
             {
@@ -161,7 +161,7 @@ namespace Steeltoe.CloudFoundry.Connector.Redis
                 throw new ArgumentNullException(nameof(config));
             }
 
-            return services.AddRedisConnectionMultiplexer(config, config, serviceName);
+            return services.AddRedisConnectionMultiplexer(config, config, serviceName, healthChecksBuilder: healthChecksBuilder);
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace Steeltoe.CloudFoundry.Connector.Redis
         /// <param name="contextLifetime"><see cref="ServiceLifetime"/> of the service to inject</param>
         /// <returns>IServiceCollection for chaining</returns>
         /// <remarks>ConnectionMultiplexer is retrievable as both ConnectionMultiplexer and IConnectionMultiplexer</remarks>
-        public static IServiceCollection AddRedisConnectionMultiplexer(this IServiceCollection services, IConfiguration applicationConfiguration, IConfiguration connectorConfiguration, string serviceName, ServiceLifetime contextLifetime = ServiceLifetime.Singleton)
+        public static IServiceCollection AddRedisConnectionMultiplexer(this IServiceCollection services, IConfiguration applicationConfiguration, IConfiguration connectorConfiguration, string serviceName, ServiceLifetime contextLifetime = ServiceLifetime.Singleton, IHealthChecksBuilder healthChecksBuilder = null)
         {
             if (services == null)
             {
@@ -188,13 +188,13 @@ namespace Steeltoe.CloudFoundry.Connector.Redis
 
             var configToConfigure = connectorConfiguration ?? applicationConfiguration;
             RedisServiceInfo info = serviceName == null ? configToConfigure.GetSingletonServiceInfo<RedisServiceInfo>() : configToConfigure.GetRequiredServiceInfo<RedisServiceInfo>(serviceName);
-            DoAddConnectionMultiplexer(services, info, configToConfigure, contextLifetime);
+            DoAddConnectionMultiplexer(services, info, configToConfigure, contextLifetime, healthChecksBuilder);
             return services;
         }
 
         #endregion
 
-        private static void DoAddIDistributedCache(IServiceCollection services, RedisServiceInfo info, IConfiguration config, ServiceLifetime contextLifetime)
+        private static void DoAddIDistributedCache(IServiceCollection services, RedisServiceInfo info, IConfiguration config, ServiceLifetime contextLifetime, IHealthChecksBuilder healthChecksBuilder = null)
         {
             Type interfaceType = RedisTypeLocator.MicrosoftInterface;
             Type connectionType = RedisTypeLocator.MicrosoftImplementation;
@@ -204,10 +204,17 @@ namespace Steeltoe.CloudFoundry.Connector.Redis
             RedisServiceConnectorFactory factory = new RedisServiceConnectorFactory(info, redisConfig, connectionType, optionsType, null);
             services.Add(new ServiceDescriptor(interfaceType, factory.Create, contextLifetime));
             services.Add(new ServiceDescriptor(connectionType, factory.Create, contextLifetime));
-            services.Add(new ServiceDescriptor(typeof(IHealthContributor), ctx => new RedisHealthContributor(factory, connectionType, ctx.GetService<ILogger<RedisHealthContributor>>()), ServiceLifetime.Singleton));
+            if (healthChecksBuilder == null)
+            {
+                services.Add(new ServiceDescriptor(typeof(IHealthContributor), ctx => new RedisHealthContributor(factory, connectionType, ctx.GetService<ILogger<RedisHealthContributor>>()), ServiceLifetime.Singleton));
+            }
+            else
+            {
+                healthChecksBuilder.AddRedis(redisConfig.ToString());
+            }
         }
 
-        private static void DoAddConnectionMultiplexer(IServiceCollection services, RedisServiceInfo info, IConfiguration config, ServiceLifetime contextLifetime)
+        private static void DoAddConnectionMultiplexer(IServiceCollection services, RedisServiceInfo info, IConfiguration config, ServiceLifetime contextLifetime, IHealthChecksBuilder healthChecksBuilder)
         {
             Type redisInterface = RedisTypeLocator.StackExchangeInterface;
             Type redisImplementation = RedisTypeLocator.StackExchangeImplementation;
@@ -218,7 +225,15 @@ namespace Steeltoe.CloudFoundry.Connector.Redis
             RedisServiceConnectorFactory factory = new RedisServiceConnectorFactory(info, redisConfig, redisImplementation, redisOptions, initializer ?? null);
             services.Add(new ServiceDescriptor(redisInterface, factory.Create, contextLifetime));
             services.Add(new ServiceDescriptor(redisImplementation, factory.Create, contextLifetime));
-            services.Add(new ServiceDescriptor(typeof(IHealthContributor), ctx => new RedisHealthContributor(factory, redisImplementation, ctx.GetService<ILogger<RedisHealthContributor>>()), ServiceLifetime.Singleton));
+            if (healthChecksBuilder == null)
+            {
+                services.Add(new ServiceDescriptor(typeof(IHealthContributor), ctx => new RedisHealthContributor(factory, redisImplementation, ctx.GetService<ILogger<RedisHealthContributor>>()), ServiceLifetime.Singleton));
+            }
+            else
+            {
+                var str = factory.GetConnectionString();
+                healthChecksBuilder.AddRedis(str);
+            }
         }
     }
 }
