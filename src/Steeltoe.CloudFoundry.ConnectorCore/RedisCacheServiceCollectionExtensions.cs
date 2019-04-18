@@ -32,6 +32,7 @@ namespace Steeltoe.CloudFoundry.Connector.Redis
         /// <param name="services">Service collection to add to</param>
         /// <param name="config">App configuration</param>
         /// <param name="logFactory">logger factory</param>
+        /// <param name="healthChecksBuilder">Microsoft HealthChecksBuilder</param>
         /// <returns>IServiceCollection for chaining</returns>
         /// <remarks>RedisCache is retrievable as both RedisCache and IDistributedCache</remarks>
         public static IServiceCollection AddDistributedRedisCache(this IServiceCollection services, IConfiguration config, ILoggerFactory logFactory = null, IHealthChecksBuilder healthChecksBuilder = null)
@@ -56,6 +57,7 @@ namespace Steeltoe.CloudFoundry.Connector.Redis
         /// <param name="config">App configuration</param>
         /// <param name="serviceName">Name of service to add</param>
         /// <param name="logFactory">logger factory</param>
+        /// <param name="healthChecksBuilder">Microsoft HealthChecksBuilder</param>
         /// <returns>IServiceCollection for chaining</returns>
         /// <remarks>RedisCache is retrievable as both RedisCache and IDistributedCache</remarks>
         public static IServiceCollection AddDistributedRedisCache(this IServiceCollection services, IConfiguration config, string serviceName, ILoggerFactory logFactory = null, IHealthChecksBuilder healthChecksBuilder = null)
@@ -86,6 +88,7 @@ namespace Steeltoe.CloudFoundry.Connector.Redis
         /// <param name="connectorConfiguration">Connector configuration</param>
         /// <param name="serviceName">Name of service to add</param>
         /// <param name="contextLifetime"><see cref="ServiceLifetime"/> of the service to inject</param>
+        /// <param name="healthChecksBuilder">Microsoft HealthChecksBuilder</param>
         /// <returns>IServiceCollection for chaining</returns>
         /// <remarks>RedisCache is retrievable as both RedisCache and IDistributedCache</remarks>
         public static IServiceCollection AddDistributedRedisCache(this IServiceCollection services, IConfiguration applicationConfiguration, IConfiguration connectorConfiguration, string serviceName, ServiceLifetime contextLifetime = ServiceLifetime.Singleton, IHealthChecksBuilder healthChecksBuilder = null)
@@ -119,6 +122,7 @@ namespace Steeltoe.CloudFoundry.Connector.Redis
         /// </summary>
         /// <param name="services">Service collection to add to</param>
         /// <param name="config">App configuration</param>
+        /// <param name="healthChecksBuilder">Microsoft HealthChecksBuilder</param>
         /// <returns>IServiceCollection for chaining</returns>
         /// <remarks>ConnectionMultiplexer is retrievable as both ConnectionMultiplexer and IConnectionMultiplexer</remarks>
         public static IServiceCollection AddRedisConnectionMultiplexer(this IServiceCollection services, IConfiguration config, IHealthChecksBuilder healthChecksBuilder = null)
@@ -142,6 +146,7 @@ namespace Steeltoe.CloudFoundry.Connector.Redis
         /// <param name="services">Service collection to add to</param>
         /// <param name="config">App configuration</param>
         /// <param name="serviceName">Name of service to add</param>
+        /// <param name="healthChecksBuilder">Microsoft HealthChecksBuilder</param>
         /// <returns>IServiceCollection for chaining</returns>
         /// <remarks>ConnectionMultiplexer is retrievable as both ConnectionMultiplexer and IConnectionMultiplexer</remarks>
         public static IServiceCollection AddRedisConnectionMultiplexer(this IServiceCollection services, IConfiguration config, string serviceName, IHealthChecksBuilder healthChecksBuilder = null)
@@ -172,6 +177,7 @@ namespace Steeltoe.CloudFoundry.Connector.Redis
         /// <param name="connectorConfiguration">Connector configuration</param>
         /// <param name="serviceName">Name of service to add</param>
         /// <param name="contextLifetime"><see cref="ServiceLifetime"/> of the service to inject</param>
+        /// <param name="healthChecksBuilder">Microsoft HealthChecksBuilder</param>
         /// <returns>IServiceCollection for chaining</returns>
         /// <remarks>ConnectionMultiplexer is retrievable as both ConnectionMultiplexer and IConnectionMultiplexer</remarks>
         public static IServiceCollection AddRedisConnectionMultiplexer(this IServiceCollection services, IConfiguration applicationConfiguration, IConfiguration connectorConfiguration, string serviceName, ServiceLifetime contextLifetime = ServiceLifetime.Singleton, IHealthChecksBuilder healthChecksBuilder = null)

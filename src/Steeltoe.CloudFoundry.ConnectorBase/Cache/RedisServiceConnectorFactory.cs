@@ -42,6 +42,16 @@ namespace Steeltoe.CloudFoundry.Connector.Redis
             Initializer = initalizer;
         }
 
+        /// <summary>
+        /// Get the connection string from Configuration sources
+        /// </summary>
+        /// <returns>Connection String</returns>
+        public string GetConnectionString()
+        {
+            var connectionOptions = _configurer.Configure(_info, _config);
+            return connectionOptions.ToString();
+        }
+
         protected Type ConnectorType { get; set; }
 
         protected Type OptionsType { get; set; }
@@ -78,12 +88,6 @@ namespace Steeltoe.CloudFoundry.Connector.Redis
         private object CreateConnectionByMethod(object options)
         {
             return Initializer.Invoke(ConnectorType, new object[] { options, null });
-        }
-
-        public string GetConnectionString()
-        {
-            var connectionOptions = _configurer.Configure(_info, _config);
-            return connectionOptions.ToString();
         }
     }
 }

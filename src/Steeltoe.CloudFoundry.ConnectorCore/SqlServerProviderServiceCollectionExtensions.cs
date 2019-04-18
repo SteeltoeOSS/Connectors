@@ -33,6 +33,7 @@ namespace Steeltoe.CloudFoundry.Connector.SqlServer
         /// <param name="config">App configuration</param>
         /// <param name="contextLifetime">Lifetime of the service to inject</param>
         /// <param name="logFactory">logger factory</param>
+        /// <param name="healthChecksBuilder">Microsoft HealthChecksBuilder</param>
         /// <returns>IServiceCollection for chaining</returns>
         public static IServiceCollection AddSqlServerConnection(this IServiceCollection services, IConfiguration config, ServiceLifetime contextLifetime = ServiceLifetime.Scoped, ILoggerFactory logFactory = null, IHealthChecksBuilder healthChecksBuilder = null)
         {
@@ -60,6 +61,7 @@ namespace Steeltoe.CloudFoundry.Connector.SqlServer
         /// <param name="serviceName">cloud foundry service name binding</param>
         /// <param name="contextLifetime">Lifetime of the service to inject</param>
         /// <param name="logFactory">logger factory</param>
+        /// <param name="healthChecksBuilder">Microsoft HealthChecksBuilder</param>
         /// <returns>IServiceCollection for chaining</returns>
         public static IServiceCollection AddSqlServerConnection(this IServiceCollection services, IConfiguration config, string serviceName, ServiceLifetime contextLifetime = ServiceLifetime.Scoped, ILoggerFactory logFactory = null, IHealthChecksBuilder healthChecksBuilder = null)
         {
@@ -97,7 +99,7 @@ namespace Steeltoe.CloudFoundry.Connector.SqlServer
             }
             else
             {
-                healthChecksBuilder.AddSqlServer(sqlServerConfig.ToString());
+                healthChecksBuilder.AddSqlServer(factory.CreateConnectionString());
             }
         }
     }

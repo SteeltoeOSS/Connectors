@@ -33,6 +33,7 @@ namespace Steeltoe.CloudFoundry.Connector.MySql
         /// <param name="config">App configuration</param>
         /// <param name="contextLifetime">Lifetime of the service to inject</param>
         /// <param name="logFactory">logging factory</param>
+        /// <param name="builder">Microsoft HealthChecksBuilder</param>
         /// <returns>IServiceCollection for chaining</returns>
         /// <remarks>MySqlConnection is retrievable as both MySqlConnection and IDbConnection</remarks>
         public static IServiceCollection AddMySqlConnection(this IServiceCollection services, IConfiguration config, ServiceLifetime contextLifetime = ServiceLifetime.Scoped, ILoggerFactory logFactory = null, IHealthChecksBuilder builder = null)
@@ -54,13 +55,14 @@ namespace Steeltoe.CloudFoundry.Connector.MySql
         }
 
         /// <summary>
-        /// Add MySql and its IHealthContributor to a ServiceCollection
+        /// Add MySql and its IHealthContributor to a ServiceCollection.
         /// </summary>
         /// <param name="services">Service collection to add to</param>
         /// <param name="config">App configuration</param>
         /// <param name="serviceName">cloud foundry service name binding</param>
         /// <param name="contextLifetime">Lifetime of the service to inject</param>
         /// <param name="logFactory">logging factory</param>
+        /// <param name="builder">Microsoft HealthChecksBuilder</param>
         /// <returns>IServiceCollection for chaining</returns>
         /// <remarks>MySqlConnection is retrievable as both MySqlConnection and IDbConnection</remarks>
         public static IServiceCollection AddMySqlConnection(this IServiceCollection services, IConfiguration config, string serviceName, ServiceLifetime contextLifetime = ServiceLifetime.Scoped, ILoggerFactory logFactory = null, IHealthChecksBuilder builder = null)

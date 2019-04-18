@@ -29,6 +29,7 @@ namespace Steeltoe.CloudFoundry.Connector.MongoDb
         /// <param name="services">Service collection to add to</param>
         /// <param name="config">App configuration</param>
         /// <param name="contextLifetime">Lifetime of the service to inject</param>
+        /// <param name="healthChecksBuilder">Microsoft HealthChecksBuilder</param>
         /// <returns>IServiceCollection for chaining</returns>
         public static IServiceCollection AddMongoClient(this IServiceCollection services, IConfiguration config, ServiceLifetime contextLifetime = ServiceLifetime.Singleton, IHealthChecksBuilder healthChecksBuilder = null)
         {
@@ -55,6 +56,7 @@ namespace Steeltoe.CloudFoundry.Connector.MongoDb
         /// <param name="config">App configuration</param>
         /// <param name="serviceName">cloud foundry service name binding</param>
         /// <param name="contextLifetime">Lifetime of the service to inject</param>
+        /// <param name="healthChecksBuilder">Microsoft HealthChecksBuilder</param>
         /// <returns>IServiceCollection for chaining</returns>
         public static IServiceCollection AddMongoClient(this IServiceCollection services, IConfiguration config, string serviceName, ServiceLifetime contextLifetime = ServiceLifetime.Singleton, IHealthChecksBuilder healthChecksBuilder = null)
         {
@@ -92,8 +94,9 @@ namespace Steeltoe.CloudFoundry.Connector.MongoDb
             }
             else
             {
-                healthChecksBuilder.AddMongoDb(mongoOptions.ToString());
+                healthChecksBuilder.AddMongoDb(clientFactory.CreateConnectionString());
             }
+
             Type mongoInfo = ConnectorHelpers.FindType(MongoDbTypeLocator.Assemblies, MongoDbTypeLocator.MongoConnectionInfo);
             var urlFactory = new MongoDbConnectorFactory(info, mongoOptions, mongoInfo);
             services.Add(new ServiceDescriptor(mongoInfo, urlFactory.Create, contextLifetime));

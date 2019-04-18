@@ -19,6 +19,7 @@ using Steeltoe.CloudFoundry.Connector.RabbitMQ;
 using Steeltoe.CloudFoundry.Connector.Services;
 using Steeltoe.Common.HealthChecks;
 using System;
+using System.Linq;
 
 namespace Steeltoe.CloudFoundry.Connector.RabbitMQ
 {
@@ -31,6 +32,7 @@ namespace Steeltoe.CloudFoundry.Connector.RabbitMQ
         /// <param name="config">App configuration</param>
         /// <param name="contextLifetime">Lifetime of the service to inject</param>
         /// <param name="logFactory">logger factory</param>
+        /// <param name="healthChecksBuilder">Microsoft HealthChecksBuilder</param>
         /// <returns>IServiceCollection for chaining</returns>
         /// <remarks>RabbitMQ.Client.ConnectionFactory is retrievable as both ConnectionFactory and IConnectionFactory</remarks>
         public static IServiceCollection AddRabbitMQConnection(this IServiceCollection services, IConfiguration config, ServiceLifetime contextLifetime = ServiceLifetime.Scoped, ILoggerFactory logFactory = null, IHealthChecksBuilder healthChecksBuilder = null)
@@ -59,6 +61,7 @@ namespace Steeltoe.CloudFoundry.Connector.RabbitMQ
         /// <param name="serviceName">cloud foundry service name binding</param>
         /// <param name="contextLifetime">Lifetime of the service to inject</param>
         /// <param name="logFactory">logger factory</param>
+        /// <param name="healthChecksBuilder">Microsoft HealthChecksBuilder</param>
         /// <returns>IServiceCollection for chaining</returns>
         /// <remarks>RabbitMQ.Client.ConnectionFactory is retrievable as both ConnectionFactory and IConnectionFactory</remarks>
         public static IServiceCollection AddRabbitMQConnection(this IServiceCollection services, IConfiguration config, string serviceName, ServiceLifetime contextLifetime = ServiceLifetime.Scoped, ILoggerFactory logFactory = null, IHealthChecksBuilder healthChecksBuilder = null)
@@ -99,7 +102,8 @@ namespace Steeltoe.CloudFoundry.Connector.RabbitMQ
             }
             else
             {
-                healthChecksBuilder.AddRabbitMQ(rabbitMQConfig.ToString());
+                var connectionString = factory.CreateConnectionString();
+                healthChecksBuilder.AddRabbitMQ(connectionString);
             }
         }
     }
